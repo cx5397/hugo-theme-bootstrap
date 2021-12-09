@@ -1,0 +1,17 @@
+/*! purgecss start ignore */
+.archive {
+  margin-bottom: 2rem;
+
+  .post-title {
+    color: variable('secondary-text-on-surface');
+
+    &:hover {
+      color: variable('accent');
+    }
+  }
+
+  .post-date {
+    color: variable('secondary-text-on-surface');
+  }
+}
+/*! purgecss end ignore */

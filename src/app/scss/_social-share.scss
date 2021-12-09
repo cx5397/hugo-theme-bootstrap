@@ -1,0 +1,14 @@
+/*! purgecss start ignore */
+.social-share-buttons {
+  overflow-y: scroll;
+  padding-bottom: 0.5rem;
+
+  .social-share-button {
+    margin-right: 0.5rem;
+    display: flex;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+/*! purgecss end ignore */

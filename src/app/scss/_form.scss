@@ -1,0 +1,16 @@
+/*! purgecss start ignore */
+.form-control {
+  &:focus {
+    box-shadow: 0 0 0 0.125rem variable('accent');
+  }
+}
+
+.form-check-input {
+  &:checked,
+  &:focus {
+    background-color: variable('accent');
+    border-color: variable('accent');
+    box-shadow: variable('accent-light');
+  }
+}
+/*! purgecss end ignore */

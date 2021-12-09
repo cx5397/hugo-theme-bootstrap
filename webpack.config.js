@@ -1,11 +1,17 @@
 const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
-const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const PurgecssPlugin = require('purgecss-webpack-plugin');
+const glob = require('glob-all');
+const PATHS = {
+  layouts: path.join(__dirname, 'layouts'),
+  src: path.join(__dirname, 'src')
+}
 
 module.exports = {
   entry: {
-    main: './src/js/index.ts',
+    app: './src/app/index.ts',
     search: ['./src/search/index.ts'],
     katex: ['./src/katex/index.ts', './src/katex/index.scss'],
     mermaid: ['./src/mermaid/index.ts'],
@@ -18,11 +24,13 @@ module.exports = {
   optimization: {
     usedExports: true,
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [new TerserPlugin({
+      extractComments: false,
+    })],
   },
   output: {
-    path: path.resolve(path.join(__dirname, 'assets', 'js')),
-    filename: '[name].js'
+    path: path.resolve(path.join(__dirname, 'assets')),
+    filename: '[name]/index.js'
   },
   module: {
     rules: [
@@ -35,21 +43,19 @@ module.exports = {
         test: /\.(scss)$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: MiniCssExtractPlugin.loader
           },
+          /*{
+            loader: 'style-loader'
+          },*/
           {
-            loader: 'css-loader'
+            loader: 'css-loader',
+            options: {
+              url: false
+            }
           },
           {
             loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                // postcss plugins, can be exported to postcss.config.js
-                plugins: [
-                  'autoprefixer'
-                ]
-              }
-            }
           },
           {
             loader: 'sass-loader'
@@ -76,13 +82,20 @@ module.exports = {
   },
   plugins: [
     new ESLintPlugin(),
-    // new CopyPlugin({
-    //   patterns: [
-    //     { 
-    //       from: path.resolve(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts')),
-    //       to: path.resolve(path.join(__dirname, 'static/fonts')),
-    //     },
-    //   ],
-    // }),
+    new MiniCssExtractPlugin({
+      filename: '[name]/index.css'
+    }),
+    new PurgecssPlugin({
+      paths: glob.sync([`${PATHS.layouts}/**/*`, `${PATHS.src}/app/js/**/*`],  { nodir: true }),
+      only: ['app'],
+      safelist: {
+        standard: [
+        ],
+        deep: [
+        ],
+        greedy: [
+        ]
+      },
+    })
   ]
 };
