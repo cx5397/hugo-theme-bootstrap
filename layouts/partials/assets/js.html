@@ -13,6 +13,9 @@
 <script src="{{ absURL . }}" crossorigin="anonymous"></script>
 {{- end -}}
 
+  {{- $iconsScript := resources.Get "icons/index.js" | minify | fingerprint -}}
+  <script src="{{ $iconsScript.Permalink }}" integrity="{{ $iconsScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
+
 {{- if (default true .Site.Params.viewer) -}}
   {{- $viewerMainScript := resources.Get "viewer/index.js" }}
   {{- $viewerConfigScript := resources.Get "js/viewer.config.js" | resources.ExecuteAsTemplate "viewer.config.js" . -}}

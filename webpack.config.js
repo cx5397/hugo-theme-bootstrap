@@ -12,6 +12,7 @@ const PATHS = {
 module.exports = {
   entry: {
     app: './src/app/index.ts',
+    icons: './src/icons/index.js',
     search: ['./src/search/index.ts'],
     katex: ['./src/katex/index.ts', './src/katex/index.scss'],
     mermaid: ['./src/mermaid/index.ts'],
@@ -20,7 +21,6 @@ module.exports = {
     'service-worker': ['./src/service-worker/index.ts'],
   },
   mode: 'production',
-  devtool: 'hidden-source-map',
   optimization: {
     usedExports: true,
     minimize: true,
