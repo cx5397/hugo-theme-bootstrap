@@ -20,13 +20,20 @@ module.exports = {
     'service-worker': ['./src/service-worker/index.ts'],
   },
   mode: 'production',
-  devtool: 'inline-source-map',
+  devtool: 'hidden-source-map',
   optimization: {
     usedExports: true,
     minimize: true,
-    minimizer: [new TerserPlugin({
-      extractComments: false,
-    })],
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      })
+    ],
   },
   output: {
     path: path.resolve(path.join(__dirname, 'assets')),
