@@ -2,12 +2,6 @@
 {{- $configScript := resources.Get "app/config.template.js" | resources.ExecuteAsTemplate "config.js" . -}}
 {{- $customScript := resources.Get "js/custom.js" -}}
 {{- $scripts := slice $configScript $mainScript -}}
-{{- if (default true .Site.Params.viewer) -}}
-  {{- $viewerMainScript := resources.Get "viewer/index.js" }}
-  {{- $viewerConfigScript := resources.Get "js/viewer.config.js" | resources.ExecuteAsTemplate "viewer.config.js" . -}}
-  {{- $viewerScript := slice $viewerConfigScript $viewerMainScript | resources.Concat "js/viewer.js" -}}
-  {{- $scripts = $scripts | append $viewerScript -}}
-{{- end -}}
 {{- if $.Site.Params.utterances -}}
   {{- $scripts = $scripts | append (resources.Get "js/utterances.js") -}}
 {{- end -}}
@@ -17,4 +11,11 @@
 <script src="{{ $script.Permalink }}" integrity="{{ $script.Data.Integrity }}" crossorigin="anonymous" defer></script>
 {{- range .Site.Params.customJS -}}
 <script src="{{ absURL . }}" crossorigin="anonymous"></script>
+{{- end -}}
+
+{{- if (default true .Site.Params.viewer) -}}
+  {{- $viewerMainScript := resources.Get "viewer/index.js" }}
+  {{- $viewerConfigScript := resources.Get "js/viewer.config.js" | resources.ExecuteAsTemplate "viewer.config.js" . -}}
+  {{- $viewerScript := slice $viewerConfigScript $viewerMainScript | resources.Concat "js/viewer.js" -}}
+  <script src="{{ $viewerScript.Permalink }}" integrity="{{ $viewerScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
 {{- end -}}
